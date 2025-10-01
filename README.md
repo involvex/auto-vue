@@ -1,4 +1,4 @@
-# create-autovue
+# @involvex/autovue
 
 ## Description
 
@@ -44,3 +44,8 @@ Contributions are welcome! If you have ideas for improvements or find a bug, ple
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Supporting the project
+
+[@involvex](https://github.com/sponsors/involvex)
+[buymeacoffee.com/involvex](https://buymeacoffee.com/involvex)

@@ -47,5 +47,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-      - name: Create and Push Release Tag
+      - name: Create Release Commit and Tag
         run: npm run release
+      - name: Push Release Commit and Tag
+        run: git push --follow-tags origin main

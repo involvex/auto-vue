@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/*! create-autovue v0.0.2 | MIT */
+/*! create-autovue v0.0.4 | MIT */
 import { createRequire } from 'node:module'
 import { execSync } from 'node:child_process'
 import * as fs from 'node:fs'
@@ -3696,7 +3696,7 @@ function emptyRouterConfig(rootDir, needsTypeScript) {
 //#endregion
 //#region package.json
 var name = '@involvex/auto-vue'
-var version = '0.0.2'
+var version = '0.0.4'
 var description = 'Full automated Vue Setup with 3 git branches: main, dev, github pages'
 var type = 'module'
 var bin = { 'create-autovue': 'bin/create-autovue.js' }
@@ -3709,6 +3709,7 @@ var scripts = {
   release: 'standard-version',
   lint: 'eslint .',
   'lint:fix': 'eslint . --fix',
+  fix: 'npm run format && npm run lint:fix',
   build:
     "rolldown -c rolldown.config.ts && node -e \"const fs = require('fs'); fs.mkdirSync('bin', {recursive: true}); fs.renameSync('bundle.js', 'bin/create-autovue.js')\"",
   snapshot: 'zx ./scripts/snapshot.mjs',
