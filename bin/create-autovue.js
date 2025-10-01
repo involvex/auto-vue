@@ -3711,7 +3711,7 @@ var scripts = {
   build:
     "rolldown -c rolldown.config.ts && node -e \"const fs = require('fs'); fs.mkdirSync('bin', {recursive: true}); fs.renameSync('bundle.js', 'bin/create-autovue.js')\"",
   snapshot: 'zx ./scripts/snapshot.mjs',
-  pretest: 'pnpm run build && pnpm run snapshot',
+  pretest: 'npm run build && npm run snapshot',
   test: 'zx ./scripts/test.mjs',
   'test:unit': 'vitest',
   preversion: "git fetch && git status -uno | grep -q 'Your branch is up to date'",
