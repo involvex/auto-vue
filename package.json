@@ -1,6 +1,6 @@
 {
   "name": "@involvex/auto-vue",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Full automated Vue Setup with 3 git branches: main, dev, github pages",
   "type": "module",
   "bin": {
@@ -21,6 +21,7 @@
     "release": "standard-version",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "fix": "npm run format && npm run lint:fix",
     "build": "rolldown -c rolldown.config.ts && node -e \"const fs = require('fs'); fs.mkdirSync('bin', {recursive: true}); fs.renameSync('bundle.js', 'bin/create-autovue.js')\"",
     "snapshot": "zx ./scripts/snapshot.mjs",
     "pretest": "npm run build && npm run snapshot",
