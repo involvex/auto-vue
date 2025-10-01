@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { execSync } from 'node:child_process'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -25,7 +26,7 @@ import { trimBoilerplate, removeCSSImport, emptyRouterConfig } from './utils/tri
 
 import cliPackageJson from './package.json' with { type: 'json' }
 
-const language = await getLanguage(fileURLToPath(new URL('./locales', import.meta.url)))
+const language = await getLanguage(fileURLToPath(new URL('../locales', import.meta.url)))
 
 const FEATURE_FLAGS = [
   'default',
@@ -156,7 +157,7 @@ async function unwrapPrompt<T>(maybeCancelPromise: Promise<T | symbol>): Promise
 }
 
 const helpMessage = `\
-Usage: create-vue [FEATURE_FLAGS...] [OPTIONS...] [DIRECTORY]
+Usage: @involvex/create-autovue [FEATURE_FLAGS...] [OPTIONS...] [DIRECTORY]
 
 Create a new Vue.js project.
 Start the CLI in interactive mode when no FEATURE_FLAGS is provided, or if the DIRECTORY argument is not a valid package name.
@@ -401,7 +402,7 @@ async function init() {
   const pkg = { name: result.packageName, version: '0.0.0' }
   fs.writeFileSync(path.resolve(root, 'package.json'), JSON.stringify(pkg, null, 2))
 
-  const templateRoot = fileURLToPath(new URL('./template', import.meta.url))
+  const templateRoot = fileURLToPath(new URL('../template', import.meta.url))
   const callbacks = []
   const render = function render(templateName) {
     const templateDir = path.resolve(templateRoot, templateName)
@@ -471,7 +472,7 @@ async function init() {
       // So we have to set a dummy `compilerOptions` in the root tsconfig to make it work.
       // I use `NodeNext` here instead of `ES2015` because that's what the actual environment is.
       // (Cypress uses the ts-node/esm loader when `type: module` is specified in package.json.)
-      // @ts-ignore
+      // @ts-expect-error
       rootTsConfig.compilerOptions = {
         module: 'NodeNext',
       }
@@ -654,14 +655,7 @@ async function init() {
 
   // Instructions:
   // Supported package managers: pnpm > yarn > bun > npm
-  const userAgent = process.env.npm_config_user_agent ?? ''
-  const packageManager = /pnpm/.test(userAgent)
-    ? 'pnpm'
-    : /yarn/.test(userAgent)
-      ? 'yarn'
-      : /bun/.test(userAgent)
-        ? 'bun'
-        : 'npm'
+  const packageManager = 'npm'
 
   // README generation
   fs.writeFileSync(
@@ -693,9 +687,20 @@ async function init() {
 
   if (!dotGitDirectoryState.hasDotGitDirectory) {
     outroMessage += `
-${dim('|')} ${language.infos.optionalGitCommand}
-  
-   ${bold(green('git init && git add -A && git commit -m "initial commit"'))}`
+
+${dim('|')} Initializing Git repository...`
+    try {
+      execSync('git init', { cwd: root, stdio: 'ignore' })
+      execSync('git add .', { cwd: root, stdio: 'ignore' })
+      execSync('git commit -m "feat: initial scaffold"', { cwd: root, stdio: 'ignore' })
+      execSync('git branch dev', { cwd: root, stdio: 'ignore' })
+      execSync('git branch gh-pages', { cwd: root, stdio: 'ignore' })
+      execSync('git checkout dev', { cwd: root, stdio: 'ignore' })
+      outroMessage += ` ${green('Done.')}`
+    } catch (e) {
+      console.error(red(`\nFailed to initialize git repository.`))
+      console.error(red(e))
+    }
   }
 
   outro(outroMessage)

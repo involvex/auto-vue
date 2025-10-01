@@ -1,0 +1,25 @@
+# Git
+.git
+.github
+.gitattributes
+.gitignore
+.gitmodules
+
+# Local configs
+.husky/
+.prettierignore
+.prettierrc
+rolldown.config.ts
+tsconfig.json
+vitest.config.ts
+
+# Source files (we ship compiled code)
+index.ts
+utils/
+__test__/
+scripts/
+playground/
+
+# Dependencies
+node_modules/
+package-lock.json

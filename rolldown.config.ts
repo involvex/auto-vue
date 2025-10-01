@@ -6,7 +6,7 @@ import packageJson from './package.json' with { type: 'json' }
 
 const CORE_LICENSE = `MIT License
 
-Copyright (c) 2021-present vuejs
+Copyright (c) 2025 involvex
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -151,7 +151,7 @@ export default defineConfig({
   output: {
     format: 'esm',
     file: 'bundle.js',
-    banner: `/*! create-vue v${packageJson.version} | MIT */`,
+    banner: `/*! create-autovue v${packageJson.version} | MIT */`,
   },
   platform: 'node',
   plugins: [
@@ -164,15 +164,15 @@ export default defineConfig({
             // There's a bug in the plugin that it also includes the `create-vue` package itself
             const dependencies = allDependencies.filter((d) => d.name !== 'create-vue')
             const licenseText =
-              `# create-vue core license\n\n` +
+              `# create-autovue core license\n\n` +
               `create-vue is released under the MIT license:\n\n` +
               CORE_LICENSE +
               `\n## License of the files in the directories template in create-vue\n\n` +
-              `The files in the directories template in create-vue and files\n` +
+              `The files in the directories template in create-autovue and files\n` +
               `generated from those files are licensed under the CC0 1.0 Universal license:\n` +
               `\n${cc0LicenseText}\n` +
               `\n## Licenses of bundled dependencies\n\n` +
-              `The published create-vue artifact additionally contains code with the following licenses:\n` +
+              `The published create-vautoue artifact additionally contains code with the following licenses:\n` +
               [...new Set(dependencies.map((dependency) => dependency.license))].join(', ') +
               '\n\n' +
               `## Bundled dependencies\n\n` +

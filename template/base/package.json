@@ -6,15 +6,30 @@
   },
   "scripts": {
     "dev": "vite",
+    "commit": "git add . && cz",
+    "release": "standard-version",
     "build": "vite build",
+    "test": "vitest",
     "preview": "vite preview"
   },
   "dependencies": {
     "vue": "^3.5.22"
   },
   "devDependencies": {
+    "vitest": "^1.6.0",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "standard-version": "^9.5.0",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "standard-version": "^9.5.0",
     "@vitejs/plugin-vue": "^6.0.1",
     "vite": "^7.1.7",
     "vite-plugin-vue-devtools": "^8.0.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

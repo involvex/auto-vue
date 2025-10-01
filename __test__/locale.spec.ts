@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect } from 'vitest'
 import { resolve } from 'node:path'
 import { readdirSync } from 'node:fs'
 import en from '../locales/en-US.json'
 
 function getKeys(obj: any, path = '', result: string[] = []) {
-  for (let key in obj) {
+  for (const key in obj) {
     if (typeof obj[key] === 'object') {
       getKeys(obj[key], path ? `${path}.${key}` : key, result)
     } else {

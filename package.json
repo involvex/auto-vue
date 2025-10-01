@@ -1,17 +1,15 @@
 {
-  "name": "create-vue",
-  "version": "3.18.1",
-  "description": "🛠️ The recommended way to start a Vite-powered Vue project",
+  "name": "@involvex/auto-vue",
+  "version": "0.0.1",
+  "description": "Full automated Vue Setup with 3 git branches: main, dev, github pages",
   "type": "module",
-  "packageManager": "pnpm@10.17.1",
   "bin": {
-    "create-vue": "bundle.js"
+    "create-autovue": "bin/create-autovue.js"
   },
   "files": [
-    "locales",
-    "bundle.js",
+    "bin",
     "template",
-    "!template/**/node_modules/.bin/*"
+    "locales"
   ],
   "engines": {
     "node": "^20.19.0 || >=22.12.0"
@@ -19,41 +17,55 @@
   "scripts": {
     "prepare": "husky",
     "format": "prettier --write .",
-    "build": "rolldown -c rolldown.config.ts",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "build": "rolldown -c rolldown.config.ts && node -e \"const fs = require('fs'); fs.mkdirSync('bin', {recursive: true}); fs.renameSync('bundle.js', 'bin/create-autovue.js')\"",
     "snapshot": "zx ./scripts/snapshot.mjs",
     "pretest": "pnpm run build && pnpm run snapshot",
     "test": "zx ./scripts/test.mjs",
     "test:unit": "vitest",
     "preversion": "git fetch && git status -uno | grep -q 'Your branch is up to date'",
     "postversion": "zx ./scripts/postversion.mjs",
-    "prepublishOnly": "pnpm run build"
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vuejs/create-vue.git"
+    "url": "git+https://github.com/involvex/auto-vue.git"
   },
-  "keywords": [],
-  "author": "Haoqun Jiang <npm@haoqun.me>",
+  "keywords": [
+    "create-vue",
+    "create-autovue",
+    "vue",
+    "vuejs",
+    "vue-setup",
+    "npm",
+    "node"
+  ],
+  "author": "involvex",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/vuejs/create-vue/issues"
-  },
-  "homepage": "https://github.com/vuejs/create-vue#readme",
+  "homepage": "https://github.com/involvex/auto-vue#readme",
   "devDependencies": {
     "@clack/prompts": "^0.11.0",
     "@tsconfig/node22": "^22.0.2",
     "@types/eslint": "^9.6.1",
     "@types/node": "^22.18.6",
     "@types/prompts": "^2.4.9",
-    "@vue/create-eslint-config": "^0.12.1",
+    "@typescript-eslint/eslint-plugin": "^8.45.0",
+    "@typescript-eslint/parser": "^8.45.0",
+    "@vue/create-eslint-config": "^0.12.2",
     "@vue/tsconfig": "^0.8.1",
     "ejs": "^3.1.10",
+    "eslint": "^9.36.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.3",
     "picocolors": "^1.1.1",
     "prettier": "3.6.2",
     "rolldown": "1.0.0-beta.40",
     "rollup-plugin-license": "^3.6.0",
+    "typescript-eslint": "^8.45.0",
     "vitest": "^3.2.4",
     "zx": "^8.8.4"
   },
