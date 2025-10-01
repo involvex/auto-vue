@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/*! create-autovue v0.0.1 | MIT */
+/*! create-autovue v0.0.2 | MIT */
 import { createRequire } from 'node:module'
 import { execSync } from 'node:child_process'
 import * as fs from 'node:fs'
@@ -3696,7 +3696,7 @@ function emptyRouterConfig(rootDir, needsTypeScript) {
 //#endregion
 //#region package.json
 var name = '@involvex/auto-vue'
-var version = '0.0.1'
+var version = '0.0.2'
 var description = 'Full automated Vue Setup with 3 git branches: main, dev, github pages'
 var type = 'module'
 var bin = { 'create-autovue': 'bin/create-autovue.js' }
@@ -3706,6 +3706,7 @@ var scripts = {
   prepare: 'husky',
   format: 'prettier --write .',
   'format:check': 'prettier --check .',
+  release: 'standard-version',
   lint: 'eslint .',
   'lint:fix': 'eslint . --fix',
   build:
@@ -3746,6 +3747,7 @@ var devDependencies = {
   prettier: '3.6.2',
   rolldown: '1.0.0-beta.40',
   'rollup-plugin-license': '^3.6.0',
+  'standard-version': '^9.5.0',
   'typescript-eslint': '^8.45.0',
   vitest: '^3.2.4',
   zx: '^8.8.4',
