@@ -34,13 +34,15 @@ jobs:
     if: github.ref == 'refs/heads/main'
     permissions:
       contents: write # Required to push tags and commits
+      id-token: write # Required for provenance
     steps:
       - uses: actions/checkout@v5
         with:
           submodules: true
       - uses: actions/setup-node@v5
         with:
-          node-version: 22
+          node-version: 'lts/*' # Use LTS for publishing
+          registry-url: 'https://registry.npmjs.org'
           cache: 'npm'
       - run: npm install
       - name: Configure Git
@@ -51,3 +53,7 @@ jobs:
         run: npm run release
       - name: Push Release Commit and Tag
         run: git push --follow-tags origin main
+      - name: Publish to npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
