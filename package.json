@@ -1,6 +1,6 @@
 {
   "name": "@involvex/auto-vue",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Full automated Vue Setup with 3 git branches: main, dev, github pages",
   "type": "module",
   "bin": {
@@ -17,12 +17,12 @@
   "scripts": {
     "prepare": "husky",
     "format": "prettier --write .",
-    "format:check": "prettier --check .",
+    "format:check": "prettier --check . --ignore-path .prettierignore",
     "release": "standard-version",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "fix": "npm run format && npm run lint:fix",
-    "build": "rolldown -c rolldown.config.ts && node -e \"const fs = require('fs'); fs.mkdirSync('bin', {recursive: true}); fs.renameSync('bundle.js', 'bin/create-autovue.js')\"",
+    "build": "rolldown -c rolldown.config.ts && node -e \"const fs = require('fs'); fs.mkdirSync('bin', {recursive: true}); fs.renameSync('bundle.js', 'bin/create-autovue.js')\" && prettier --write bin/create-autovue.js",
     "snapshot": "node ./scripts/snapshot.mjs",
     "pretest": "npm run build && npm run snapshot",
     "test": "zx ./scripts/test.mjs",

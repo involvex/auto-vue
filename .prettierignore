@@ -1,13 +1,21 @@
-pnpm-lock.yaml
+# Generated files
+bin/
+bundle.js
 
-# prettier doesn't respect newlines between chained methods
-# https://github.com/prettier/prettier/issues/7884
-**/*.spec.js
-**/*.spec.ts
-# but let's format our unit tests
-!__test__/**/*.spec.ts
-**/dist
-# https://github.com/prettier/prettier/issues/5246
-**/*.html
+# Dependencies
+node_modules/
 
-playground
+# Build outputs
+dist/
+build/
+
+# Documentation (if needed)
+# docs/
+
+# Other
+*.log
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local

@@ -12,6 +12,10 @@ try {
   await $`npm run build`
   await $`npm run format`
   await $`npm run lint:fix`
+  
+  // Step 1.5: Check formatting
+  console.log(chalk.yellow('🎨 Checking formatting...'))
+  await $`npm run format:check`
 
   // Step 2: Run tests
   console.log(chalk.yellow('🧪 Running tests...'))
