@@ -23,7 +23,15 @@ try {
     # Step 2: Pull latest changes from remote
     Write-Host "Pulling latest changes from remote..." -ForegroundColor Yellow
     try {
-        git pull origin main
+        git fetch origin main
+        $localCommit = git rev-parse HEAD
+        $remoteCommit = git rev-parse origin/main
+        if ($localCommit -ne $remoteCommit) {
+            Write-Host "Remote has new changes, pulling..." -ForegroundColor Yellow
+            git pull origin main
+        } else {
+            Write-Host "Local is up to date with remote" -ForegroundColor Blue
+        }
     } catch {
         Write-Host "No remote changes to pull" -ForegroundColor Blue
     }
@@ -68,7 +76,7 @@ try {
         git push origin main
     } catch {
         Write-Host "Failed to push main branch, trying to pull and merge..." -ForegroundColor Red
-        git pull origin main --rebase
+        git pull origin main
         git push origin main
     }
 
