@@ -54,11 +54,15 @@ try {
     Write-Host "Committing changes: $commitMessage" -ForegroundColor Yellow
     git commit -m $commitMessage
 
-    # Step 5: Get current version
+    # Step 5: Create new release (bump version)
+    Write-Host "Creating new release..." -ForegroundColor Yellow
+    npm run release
+
+    # Step 6: Get current version after release
     $packageJson = Get-Content "package.json" | ConvertFrom-Json
     $currentVersion = $packageJson.version
 
-    # Step 6: Create and push tag (if it doesn't exist)
+    # Step 7: Create and push tag (if it doesn't exist)
     $tagName = "v$currentVersion"
     Write-Host "Checking if tag $tagName exists..." -ForegroundColor Yellow
     
@@ -70,7 +74,7 @@ try {
         git tag -a $tagName -m "Release $tagName"
     }
 
-    # Step 7: Push to GitHub
+    # Step 8: Push to GitHub
     Write-Host "Pushing to GitHub..." -ForegroundColor Yellow
     try {
         git push origin main

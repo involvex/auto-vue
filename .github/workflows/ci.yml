@@ -99,9 +99,9 @@ jobs:
           npm run build
           npm run format
           npm run lint:fix
-          npm run release
           git add .
           git commit -m "chore: automated deployment $(date +'%Y-%m-%d %H:%M:%S')" || echo "No changes to commit"
+          npm run release
           git push origin main
           git push origin --tags || echo "No tags to push"
       - name: Publish to npm

@@ -67,11 +67,15 @@ try {
   console.log(chalk.yellow(`💾 Committing changes: ${commitMessage}`))
   await runCommand(`git commit -m "${commitMessage}"`)
 
-  // Step 6: Get current version
+  // Step 6: Create new release (bump version)
+  console.log(chalk.yellow('📦 Creating new release...'))
+  await runCommand('npm run release')
+
+  // Step 7: Get current version after release
   const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'))
   const currentVersion = packageJson.version
 
-  // Step 7: Create and push tag (if it doesn't exist)
+  // Step 8: Create and push tag (if it doesn't exist)
   const tagName = `v${currentVersion}`
   console.log(chalk.yellow(`🏷️  Checking if tag ${tagName} exists...`))
 
@@ -83,7 +87,7 @@ try {
     await runCommand(`git tag -a ${tagName} -m "Release ${tagName}"`)
   }
 
-  // Step 8: Push to GitHub with force for tags
+  // Step 9: Push to GitHub with force for tags
   console.log(chalk.yellow('🚀 Pushing to GitHub...'))
   try {
     await runCommand('git push origin main')

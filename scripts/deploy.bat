@@ -44,12 +44,17 @@ set COMMIT_MSG=chore: automated deployment %DATE% %TIME%
 echo Committing changes: %COMMIT_MSG%
 git commit -m "%COMMIT_MSG%"
 
-REM Step 5: Get current version
+REM Step 5: Create new release (bump version)
+echo Creating new release...
+call npm run release
+if %errorlevel% neq 0 exit /b %errorlevel%
+
+REM Step 6: Get current version after release
 for /f "tokens=2 delims=:" %%a in ('findstr "version" package.json') do set VERSION=%%a
 set VERSION=%VERSION: =%
 set VERSION=%VERSION:,=%
 
-REM Step 6: Create and push tag (if it doesn't exist)
+REM Step 7: Create and push tag (if it doesn't exist)
 set TAG_NAME=v%VERSION%
 echo Checking if tag %TAG_NAME% exists...
 git rev-parse --verify %TAG_NAME% >nul 2>&1
@@ -60,7 +65,7 @@ if %errorlevel% equ 0 (
     git tag -a %TAG_NAME% -m "Release %TAG_NAME%"
 )
 
-REM Step 7: Push to GitHub
+REM Step 8: Push to GitHub
 echo Pushing to GitHub...
 git push origin main
 if %errorlevel% neq 0 (
