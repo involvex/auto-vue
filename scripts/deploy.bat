@@ -18,7 +18,14 @@ echo Checking formatting...
 call npm run format:check
 if %errorlevel% neq 0 exit /b %errorlevel%
 
-REM Step 2: Check git status
+REM Step 2: Pull latest changes from remote
+echo Pulling latest changes from remote...
+git pull origin main
+if %errorlevel% neq 0 (
+    echo No remote changes to pull
+)
+
+REM Step 3: Check git status
 echo Checking git status...
 for /f %%i in ('git status --porcelain') do set GIT_STATUS=%%i
 if "%GIT_STATUS%"=="" (
@@ -56,7 +63,17 @@ if %errorlevel% equ 0 (
 REM Step 7: Push to GitHub
 echo Pushing to GitHub...
 git push origin main
+if %errorlevel% neq 0 (
+    echo Failed to push main branch, trying to pull and merge...
+    git pull origin main --rebase
+    git push origin main
+)
+
+REM Push tags, skip if they already exist remotely
 git push origin --tags
+if %errorlevel% neq 0 (
+    echo Some tags already exist remotely, continuing...
+)
 
 echo Deployment completed successfully!
 echo Version: v%VERSION%

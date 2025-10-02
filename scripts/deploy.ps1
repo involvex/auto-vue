@@ -20,7 +20,15 @@ try {
     Write-Host "Checking formatting..." -ForegroundColor Yellow
     npm run format:check
 
-    # Step 2: Check git status
+    # Step 2: Pull latest changes from remote
+    Write-Host "Pulling latest changes from remote..." -ForegroundColor Yellow
+    try {
+        git pull origin main
+    } catch {
+        Write-Host "No remote changes to pull" -ForegroundColor Blue
+    }
+
+    # Step 3: Check git status
     Write-Host "Checking git status..." -ForegroundColor Yellow
     $gitStatus = git status --porcelain
     
@@ -56,8 +64,20 @@ try {
 
     # Step 7: Push to GitHub
     Write-Host "Pushing to GitHub..." -ForegroundColor Yellow
-    git push origin main
-    git push origin --tags
+    try {
+        git push origin main
+    } catch {
+        Write-Host "Failed to push main branch, trying to pull and merge..." -ForegroundColor Red
+        git pull origin main --rebase
+        git push origin main
+    }
+
+    # Push tags, skip if they already exist remotely
+    try {
+        git push origin --tags
+    } catch {
+        Write-Host "Some tags already exist remotely, continuing..." -ForegroundColor Blue
+    }
 
     Write-Host "Deployment completed successfully!" -ForegroundColor Green
     Write-Host "Version: v$currentVersion" -ForegroundColor Green

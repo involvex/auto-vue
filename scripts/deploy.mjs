@@ -41,7 +41,15 @@ try {
   console.log(chalk.yellow('🎨 Checking formatting...'))
   await runCommand('npm run format:check')
 
-  // Step 2: Check git status
+  // Step 2: Pull latest changes from remote
+  console.log(chalk.yellow('🔄 Pulling latest changes from remote...'))
+  try {
+    await runCommand('git pull origin main')
+  } catch (error) {
+    console.log(chalk.blue('ℹ️  No remote changes to pull'))
+  }
+
+  // Step 3: Check git status
   console.log(chalk.yellow('📋 Checking git status...'))
   const { stdout: gitStatus } = await runCommand('git status --porcelain')
 
@@ -50,35 +58,47 @@ try {
     process.exit(0)
   }
 
-  // Step 3: Add all changes
+  // Step 4: Add all changes
   console.log(chalk.yellow('📝 Adding changes to git...'))
   await runCommand('git add .')
 
-  // Step 4: Create commit
+  // Step 5: Create commit
   const commitMessage = `chore: automated deployment ${timestamp}`
   console.log(chalk.yellow(`💾 Committing changes: ${commitMessage}`))
   await runCommand(`git commit -m "${commitMessage}"`)
 
-  // Step 5: Get current version
+  // Step 6: Get current version
   const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'))
   const currentVersion = packageJson.version
 
-  // Step 6: Create and push tag (if it doesn't exist)
+  // Step 7: Create and push tag (if it doesn't exist)
   const tagName = `v${currentVersion}`
   console.log(chalk.yellow(`🏷️  Checking if tag ${tagName} exists...`))
 
   try {
     await runCommand(`git rev-parse --verify ${tagName}`)
-    console.log(chalk.blue(`✅ Tag ${tagName} already exists, skipping creation`))
+    console.log(chalk.blue(`✅ Tag ${tagName} already exists locally, skipping creation`))
   } catch {
     console.log(chalk.yellow(`🏷️  Creating tag ${tagName}...`))
     await runCommand(`git tag -a ${tagName} -m "Release ${tagName}"`)
   }
 
-  // Step 7: Push to GitHub
+  // Step 8: Push to GitHub with force for tags
   console.log(chalk.yellow('🚀 Pushing to GitHub...'))
-  await runCommand('git push origin main')
-  await runCommand('git push origin --tags')
+  try {
+    await runCommand('git push origin main')
+  } catch (error) {
+    console.log(chalk.red('❌ Failed to push main branch, trying to pull and merge...'))
+    await runCommand('git pull origin main --rebase')
+    await runCommand('git push origin main')
+  }
+
+  // Push tags, skip if they already exist remotely
+  try {
+    await runCommand('git push origin --tags')
+  } catch (error) {
+    console.log(chalk.blue('ℹ️  Some tags already exist remotely, continuing...'))
+  }
 
   console.log(chalk.green('✅ Deployment completed successfully!'))
   console.log(chalk.green(`📦 Version: v${currentVersion}`))
