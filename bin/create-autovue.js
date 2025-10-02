@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/*! @involvex/autovue v0.1.1 | MIT */
+/*! @involvex/autovue v0.1.2 | MIT */
 import { createRequire } from "node:module";
 import { execSync } from "node:child_process";
 import * as fs from "node:fs";
@@ -2736,7 +2736,7 @@ function emptyRouterConfig(rootDir, needsTypeScript) {
 //#endregion
 //#region package.json
 var name = "@involvex/auto-vue";
-var version = "0.1.1";
+var version = "0.1.2";
 var description = "Full automated Vue Setup with 3 git branches: main, dev, github pages";
 var type = "module";
 var bin = { "create-autovue": "bin/create-autovue.js" };
