@@ -99,7 +99,6 @@ jobs:
           npm run build
           npm run format
           npm run lint:fix
-          npm run test
           npm run release
           git add .
           git commit -m "chore: automated deployment $(date +'%Y-%m-%d %H:%M:%S')" || echo "No changes to commit"

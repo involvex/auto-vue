@@ -9,9 +9,10 @@ export default tseslint.config(js.configs.recommended, ...tseslint.configs.recom
     '*.config.js',
     '*.config.ts',
     '.eslintrc.cjs',
-    'playground/',
+    'playground/**/*',
     'scripts/',
     'template/',
-    'docs/',
+    'docs/**/*',
+    '.github/**/*',
   ],
 })
