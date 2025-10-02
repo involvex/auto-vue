@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*!
- * @involvex/autovue v0.1.4
+ * @involvex/autovue v0.1.7
  * Full automated Vue Setup with 3 git branches: main, dev, github pages
  * 
  * Copyright (c) 2025 involvex
@@ -2745,7 +2745,7 @@ function emptyRouterConfig(rootDir, needsTypeScript) {
 //#endregion
 //#region package.json
 var name = "@involvex/auto-vue";
-var version = "0.1.4";
+var version = "0.1.7";
 var description = "Full automated Vue Setup with 3 git branches: main, dev, github pages";
 var type = "module";
 var bin = { "create-autovue": "bin/create-autovue.js" };

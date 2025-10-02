@@ -1,6 +1,5 @@
 # @involvex/autovue
 
-
 ```bash
 # npx @involvex/auto-vue@latest my-vue-project
 ```
