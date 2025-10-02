@@ -1,5 +1,6 @@
 {
-  "include": ["index.ts", "utils/**/*", "eslint.config.js"],
+  "extends": "./tsconfig.json",
+  "include": ["index.ts", "utils/**/*", "__test__/**/*", "eslint.config.js"],
   "exclude": [
     "node_modules",
     "bin",
@@ -11,15 +12,15 @@
     ".github/**/*"
   ],
   "compilerOptions": {
-    "strict": false,
-    "resolveJsonModule": true,
-    "moduleResolution": "Bundler",
-    "module": "ESNext",
     "target": "ES2022",
     "lib": ["ES2022"],
+    "module": "esnext",
+    "moduleResolution": "Bundler",
+    "strict": false,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
   }
 }

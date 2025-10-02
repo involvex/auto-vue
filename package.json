@@ -22,7 +22,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "fix": "npm run format && npm run lint:fix",
-    "build": "rolldown -c rolldown.config.ts && node -e \"const fs = require('fs'); fs.mkdirSync('bin', {recursive: true}); fs.renameSync('bundle.js', 'bin/create-autovue.js')\" && prettier --write bin/create-autovue.js",
+    "build": "rolldown -c rolldown.config.ts && prettier --write bin/create-autovue.js",
     "snapshot": "node ./scripts/snapshot.mjs",
     "pretest": "npm run build && npm run snapshot",
     "test": "zx ./scripts/test.mjs",
@@ -35,7 +35,7 @@
     "deploy:bat": "scripts\\deploy.bat",
     "deploy:zx": "zx ./scripts/deploy.mjs",
     "deploy:full": "npm run build && npm run format && npm run lint:fix && npm run release && npm run git:sync",
-    "git:sync": "git add . && git commit -m \"chore: automated deployment $(date +'%Y-%m-%d %H:%M:%S')\" && git push origin main && git push origin --tags",
+    "git:sync": "git add . && git commit -m \"chore: automated deployment $(date +'%Y-%m-%d %H:%M:%S')\" && git push origin main && (git tag -a v$(node -p \"require('./package.json').version\") -m \"Release v$(node -p \"require('./package.json').version\")\" 2>/dev/null || echo \"Tag already exists\") && git push origin --tags",
     "git:tag": "git tag -a v$(node -p \"require('./package.json').version\") -m \"Release v$(node -p \"require('./package.json').version\")\"",
     "git:push": "git push origin main && git push origin --tags",
     "sync": "npm run git:sync"

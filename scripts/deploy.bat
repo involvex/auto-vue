@@ -42,9 +42,16 @@ for /f "tokens=2 delims=:" %%a in ('findstr "version" package.json') do set VERS
 set VERSION=%VERSION: =%
 set VERSION=%VERSION:,=%
 
-REM Step 6: Create and push tag
-echo Creating tag v%VERSION%...
-git tag -a v%VERSION% -m "Release v%VERSION%"
+REM Step 6: Create and push tag (if it doesn't exist)
+set TAG_NAME=v%VERSION%
+echo Checking if tag %TAG_NAME% exists...
+git rev-parse --verify %TAG_NAME% >nul 2>&1
+if %errorlevel% equ 0 (
+    echo Tag %TAG_NAME% already exists, skipping creation
+) else (
+    echo Creating tag %TAG_NAME%...
+    git tag -a %TAG_NAME% -m "Release %TAG_NAME%"
+)
 
 REM Step 7: Push to GitHub
 echo Pushing to GitHub...

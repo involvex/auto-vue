@@ -63,9 +63,17 @@ try {
   const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'))
   const currentVersion = packageJson.version
 
-  // Step 6: Create and push tag
-  console.log(chalk.yellow(`🏷️  Creating tag v${currentVersion}...`))
-  await runCommand(`git tag -a v${currentVersion} -m "Release v${currentVersion}"`)
+  // Step 6: Create and push tag (if it doesn't exist)
+  const tagName = `v${currentVersion}`
+  console.log(chalk.yellow(`🏷️  Checking if tag ${tagName} exists...`))
+
+  try {
+    await runCommand(`git rev-parse --verify ${tagName}`)
+    console.log(chalk.blue(`✅ Tag ${tagName} already exists, skipping creation`))
+  } catch {
+    console.log(chalk.yellow(`🏷️  Creating tag ${tagName}...`))
+    await runCommand(`git tag -a ${tagName} -m "Release ${tagName}"`)
+  }
 
   // Step 7: Push to GitHub
   console.log(chalk.yellow('🚀 Pushing to GitHub...'))

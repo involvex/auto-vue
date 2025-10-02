@@ -6,8 +6,9 @@ import createESLintConfig from '@vue/create-eslint-config'
 import sortDependencies from './sortDependencies'
 import deepMerge from './deepMerge'
 
-import eslintTemplatePackage from '../template/eslint/package.json' with { type: 'json' }
-const eslintDeps = eslintTemplatePackage.devDependencies
+import eslintTemplatePackage from '../template/eslint/package.json'
+const eslintDeps = (eslintTemplatePackage as { devDependencies: Record<string, string> })
+  .devDependencies
 
 export default function renderEslint(
   rootDir,

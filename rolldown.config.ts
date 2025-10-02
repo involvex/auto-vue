@@ -1,8 +1,9 @@
-import fs from 'node:fs'
-import path from 'node:path'
+import * as fs from 'node:fs'
+import * as path from 'node:path'
 import { defineConfig, RolldownPlugin } from 'rolldown'
 import license from 'rollup-plugin-license'
-import packageJson from './package.json' with { type: 'json' }
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const packageJson = require('./package.json')
 
 const CORE_LICENSE = `MIT License
 
@@ -35,8 +36,18 @@ export default defineConfig({
   input: 'index.ts',
   output: {
     format: 'esm',
-    file: 'bundle.js',
-    banner: `/*! @involvex/autovue v${packageJson.version} | MIT */`,
+    file: 'bin/create-autovue.js',
+    sourcemap: false,
+    banner: `/*!
+ * @involvex/autovue v${packageJson.version}
+ * Full automated Vue Setup with 3 git branches: main, dev, github pages
+ * 
+ * Copyright (c) 2025 involvex
+ * Licensed under MIT License
+ * 
+ * GitHub: https://github.com/involvex/auto-vue
+ * NPM: https://www.npmjs.com/package/@involvex/auto-vue
+ */`,
   },
   platform: 'node',
   plugins: [
@@ -44,7 +55,7 @@ export default defineConfig({
       thirdParty: {
         includePrivate: false,
         output: {
-          file: path.join(import.meta.dirname, 'LICENSE'),
+          file: path.join(__dirname, 'LICENSE'),
           template(allDependencies) {
             // There's a bug in the plugin that it also includes the `create-vue` package itself
             const dependencies = allDependencies.filter((d) => d.name !== 'create-vue')
@@ -62,7 +73,7 @@ export default defineConfig({
               `\n${cc0LicenseText}\n` +
               `\n## Licenses of bundled dependencies\n\n` +
               `The published create-vautoue artifact additionally contains code with the following licenses:\n` +
-              [...new Set(dependencies.map((dependency) => dependency.license))].join(', ') +
+              Array.from(new Set(dependencies.map((dependency) => dependency.license))).join(', ') +
               '\n\n' +
               `## Bundled dependencies\n\n` +
               dependencies

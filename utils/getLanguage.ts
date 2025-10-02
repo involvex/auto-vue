@@ -77,7 +77,9 @@ function linkLocale(locale: string) {
 
   let linkedLocale: string
   try {
-    linkedLocale = Intl.getCanonicalLocales(locale)[0]
+    linkedLocale = (
+      Intl as typeof Intl & { getCanonicalLocales: (locale: string) => string[] }
+    ).getCanonicalLocales(locale)[0]
   } catch (error) {
     console.log(`${error.toString()}, invalid language tag: "${locale}"\n`)
   }

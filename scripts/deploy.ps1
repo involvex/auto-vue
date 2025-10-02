@@ -42,9 +42,17 @@ try {
     $packageJson = Get-Content "package.json" | ConvertFrom-Json
     $currentVersion = $packageJson.version
 
-    # Step 6: Create and push tag
-    Write-Host "Creating tag v$currentVersion..." -ForegroundColor Yellow
-    git tag -a "v$currentVersion" -m "Release v$currentVersion"
+    # Step 6: Create and push tag (if it doesn't exist)
+    $tagName = "v$currentVersion"
+    Write-Host "Checking if tag $tagName exists..." -ForegroundColor Yellow
+    
+    try {
+        git rev-parse --verify $tagName | Out-Null
+        Write-Host "Tag $tagName already exists, skipping creation" -ForegroundColor Blue
+    } catch {
+        Write-Host "Creating tag $tagName..." -ForegroundColor Yellow
+        git tag -a $tagName -m "Release $tagName"
+    }
 
     # Step 7: Push to GitHub
     Write-Host "Pushing to GitHub..." -ForegroundColor Yellow

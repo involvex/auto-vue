@@ -16,10 +16,7 @@
     "vue": "^3.5.22"
   },
   "devDependencies": {
-    "vitest": "^1.6.0",
-    "commitizen": "^4.3.0",
-    "cz-conventional-changelog": "^3.3.0",
-    "standard-version": "^9.5.0",
+    "vitest": "^3.2.4",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
     "standard-version": "^9.5.0",

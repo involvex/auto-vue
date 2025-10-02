@@ -1,5 +1,14 @@
 #!/usr/bin/env node
-/*! @involvex/autovue v0.1.2 | MIT */
+/*!
+ * @involvex/autovue v0.1.2
+ * Full automated Vue Setup with 3 git branches: main, dev, github pages
+ * 
+ * Copyright (c) 2025 involvex
+ * Licensed under MIT License
+ * 
+ * GitHub: https://github.com/involvex/auto-vue
+ * NPM: https://www.npmjs.com/package/@involvex/auto-vue
+ */
 import { createRequire } from "node:module";
 import { execSync } from "node:child_process";
 import * as fs from "node:fs";
@@ -2754,7 +2763,7 @@ var scripts = {
 	"lint": "eslint .",
 	"lint:fix": "eslint . --fix",
 	"fix": "npm run format && npm run lint:fix",
-	"build": "rolldown -c rolldown.config.ts && node -e \"const fs = require('fs'); fs.mkdirSync('bin', {recursive: true}); fs.renameSync('bundle.js', 'bin/create-autovue.js')\" && prettier --write bin/create-autovue.js",
+	"build": "rolldown -c rolldown.config.ts && prettier --write bin/create-autovue.js",
 	"snapshot": "node ./scripts/snapshot.mjs",
 	"pretest": "npm run build && npm run snapshot",
 	"test": "zx ./scripts/test.mjs",
@@ -2767,7 +2776,7 @@ var scripts = {
 	"deploy:bat": "scripts\\deploy.bat",
 	"deploy:zx": "zx ./scripts/deploy.mjs",
 	"deploy:full": "npm run build && npm run format && npm run lint:fix && npm run release && npm run git:sync",
-	"git:sync": "git add . && git commit -m \"chore: automated deployment $(date +'%Y-%m-%d %H:%M:%S')\" && git push origin main && git push origin --tags",
+	"git:sync": "git add . && git commit -m \"chore: automated deployment $(date +'%Y-%m-%d %H:%M:%S')\" && git push origin main && (git tag -a v$(node -p \"require('./package.json').version\") -m \"Release v$(node -p \"require('./package.json').version\")\" 2>/dev/null || echo \"Tag already exists\") && git push origin --tags",
 	"git:tag": "git tag -a v$(node -p \"require('./package.json').version\") -m \"Release v$(node -p \"require('./package.json').version\")\"",
 	"git:push": "git push origin main && git push origin --tags",
 	"sync": "npm run git:sync"
@@ -2861,7 +2870,8 @@ const FEATURE_FLAGS = [
 	"prettier",
 	"eslint-with-prettier",
 	"oxlint",
-	"rolldown-vite"
+	"rolldown-vite",
+	"license"
 ];
 const FEATURE_OPTIONS = [
 	{
@@ -2895,6 +2905,10 @@ const FEATURE_OPTIONS = [
 	{
 		value: "prettier",
 		label: language.needsPrettier.message
+	},
+	{
+		value: "license",
+		label: "Add MIT License file"
 	}
 ];
 const EXPERIMENTAL_FEATURE_OPTIONS = [{
@@ -2933,7 +2947,7 @@ async function unwrapPrompt(maybeCancelPromise) {
 	return result;
 }
 const helpMessage = `\
-Usage: @involvex/create-autovue [FEATURE_FLAGS...] [OPTIONS...] [DIRECTORY]
+Usage: @involvex/auto-vue [FEATURE_FLAGS...] [OPTIONS...] [DIRECTORY]
 
 Create a new Vue.js project.
 Start the CLI in interactive mode when no FEATURE_FLAGS is provided, or if the DIRECTORY argument is not a valid package name.
@@ -2943,7 +2957,7 @@ Options:
     Create the project even if the directory is not empty.
   --bare
     Create a barebone project without example code.
-  --help
+  --help, -h
     Display this help message.
   --version
     Display the version number of this CLI.
@@ -2975,6 +2989,8 @@ Available feature flags:
     Add Prettier for code formatting in addition to ESLint.
   --prettier
     Add Prettier for code formatting.
+  --license
+    Add MIT License file.
   --oxlint
     Add Oxlint for code quality and formatting.
   --rolldown-vite
@@ -2993,6 +3009,7 @@ async function init() {
 		"force",
 		"bare",
 		"help",
+		"h",
 		"version"
 	];
 	const options = Object.fromEntries(flags.map((key) => [key, { type: "boolean" }]));
@@ -3002,7 +3019,7 @@ async function init() {
 		strict: true,
 		allowPositionals: true
 	});
-	if (argv$1.help) {
+	if (argv$1.help || argv$1.h) {
 		console.log(helpMessage);
 		process.exit(0);
 	}
@@ -3095,6 +3112,7 @@ async function init() {
 	const needsPrettier = argv$1.prettier || argv$1["eslint-with-prettier"] || features.includes("prettier");
 	const needsOxlint = experimentFeatures.includes("oxlint") || argv$1["oxlint"];
 	const needsRolldownVite = experimentFeatures.includes("rolldown-vite") || argv$1["rolldown-vite"];
+	const needsLicense = features.includes("license") || argv$1.license;
 	const { e2eFramework } = result;
 	const needsCypress = argv$1.cypress || argv$1.tests || e2eFramework === "cypress";
 	const needsCypressCT = needsCypress && !needsVitest;
@@ -3229,6 +3247,30 @@ async function init() {
 		needsCypressCT,
 		needsEslint
 	}));
+	if (needsLicense) {
+		const licenseContent = `MIT License
+
+Copyright (c) ${(/* @__PURE__ */ new Date()).getFullYear()} ${result.projectName ?? result.packageName ?? defaultProjectName}
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.`;
+		fs.writeFileSync(path.resolve(root, "LICENSE"), licenseContent);
+	}
 	let outroMessage = `${language.infos.done}\n\n`;
 	if (root !== cwd) {
 		const cdProjectName = path.relative(cwd, root);
@@ -3240,7 +3282,7 @@ async function init() {
 	if (!dotGitDirectoryState.hasDotGitDirectory) {
 		outroMessage += `
 
-${(0, import_picocolors.dim)("|")} Initializing Git repository...`;
+${(0, import_picocolors.dim)("|")} Initializing Git repository...\n`;
 		try {
 			execSync("git init", {
 				cwd: root,
@@ -3251,6 +3293,10 @@ ${(0, import_picocolors.dim)("|")} Initializing Git repository...`;
 				stdio: "ignore"
 			});
 			execSync("git commit -m \"feat: initial scaffold\"", {
+				cwd: root,
+				stdio: "ignore"
+			});
+			execSync("git branch main", {
 				cwd: root,
 				stdio: "ignore"
 			});
@@ -3266,7 +3312,9 @@ ${(0, import_picocolors.dim)("|")} Initializing Git repository...`;
 				cwd: root,
 				stdio: "ignore"
 			});
-			outroMessage += ` ${(0, import_picocolors.green)("Done.")}`;
+			outroMessage += ` ${(0, import_picocolors.green)(" Done.\n")}`;
+			outroMessage += ` ${(0, import_picocolors.green)(" Created branches: main, dev, gh-pages.\n")}`;
+			outroMessage += ` ${(0, import_picocolors.green)(" Checked out dev branch.\n")}`;
 		} catch (e$1) {
 			console.error((0, import_picocolors.red)(`\nFailed to initialize git repository.`));
 			console.error((0, import_picocolors.red)(e$1));
