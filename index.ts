@@ -6,7 +6,7 @@ import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { parseArgs } from 'node:util'
 import { intro, outro, text, confirm, multiselect, select, isCancel, cancel } from '@clack/prompts'
-import { red, green, cyan, bold, dim } from 'picocolors'
+import { red, green, cyan, bold, dim, magenta } from 'picocolors'
 
 import ejs from 'ejs'
 
@@ -472,7 +472,7 @@ async function init() {
       // So we have to set a dummy `compilerOptions` in the root tsconfig to make it work.
       // I use `NodeNext` here instead of `ES2015` because that's what the actual environment is.
       // (Cypress uses the ts-node/esm loader when `type: module` is specified in package.json.)
-      // @ts-expect-error
+      // @ts-expect-error TS(2322) -- rootTsConfig.compilerOptions is being modified for Cypress compatibility
       rootTsConfig.compilerOptions = {
         module: 'NodeNext',
       }
@@ -704,6 +704,10 @@ ${dim('|')} Initializing Git repository...`
   }
 
   outro(outroMessage)
+
+  outro(
+    `${bold(magenta('Thank you for using @involvex/autovue !\n\n   Visit https://github.com/involvex/auto-vue for more information !\n\n   Consider supporting this project https://github.com/involvex/auto-vue?tab=readme-ov-file#supporting-the-project'))}\n`,
+  )
 }
 
 init().catch((e) => {

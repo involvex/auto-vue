@@ -1,10 +1,16 @@
 #!/usr/bin/env zx
 import fs from 'node:fs'
 import 'zx/globals'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+import path from 'path'
+import { exec } from 'node:child_process'
+
+process.env.SHELL = 'powershell.exe'
 
 $.verbose = false
 
-if (!/pnpm/.test(process.env.npm_config_user_agent ?? ''))
+if (!/pnpm|npm/.test(process.env.npm_config_user_agent ?? ''))
   throw new Error("Please use pnpm ('pnpm run snapshot') to generate snapshots!")
 
 const featureFlags = [
@@ -75,7 +81,7 @@ withTestsFlags.push(['with-tests'])
 
 flagCombinations.push(...withTestsFlags)
 
-const playgroundDir = path.resolve(__dirname, '../playground/')
+const playgroundDir = path.resolve(dirname(fileURLToPath(import.meta.url)), '../playground/')
 cd(playgroundDir)
 
 // remove all previous combinations
@@ -83,7 +89,13 @@ for (const flags of flagCombinations) {
   const projectName = flags.join('-')
 
   console.log(`Removing previously generated project ${projectName}`)
-  fs.rmSync(projectName, { recursive: true, force: true })
+  try {
+    fs.rmSync(projectName, { recursive: true, force: true })
+  } catch (error) {
+    console.warn(`Failed to remove ${projectName} on first attempt: ${error.message}. Retrying...`)
+    await new Promise((resolve) => setTimeout(resolve, 1000)) // Wait for 1 second
+    fs.rmSync(projectName, { recursive: true, force: true }) // Retry
+  }
 }
 
 // Filter out combinations that are not allowed
@@ -97,11 +109,25 @@ flagCombinations = flagCombinations
   // `--bare` is a supplementary flag and should not be used alone
   .filter((combination) => !(combination.length === 1 && combination[0] === 'bare'))
 
-const bin = path.posix.relative('../playground/', '../bundle.js')
+const bin = path.posix.relative('../playground/', '../bin/create-autovue.js')
 
 for (const flags of flagCombinations) {
   const projectName = flags.join('-')
 
   console.log(`Creating project ${projectName}`)
-  await $`node ${[bin, projectName, ...flags.map((flag) => `--${flag}`), '--force']}`
+  await new Promise((resolve, reject) => {
+    exec(
+      `node ${bin} ${projectName} ${flags.map((flag) => `--${flag}`).join(' ')} --force`,
+      { cwd: playgroundDir },
+      (error, stdout, stderr) => {
+        if (error) {
+          console.error(`exec error: ${error}`)
+          return reject(error)
+        }
+        console.log(`stdout: ${stdout}`)
+        console.error(`stderr: ${stderr}`)
+        resolve()
+      },
+    )
+  })
 }

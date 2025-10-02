@@ -1,7 +1,13 @@
 #!/usr/bin/env zx
 import 'zx/globals'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+import path from 'path'
+import { exec } from 'node:child_process'
 
-const playgroundDir = path.resolve(__dirname, '../playground/')
+process.env.SHELL = 'powershell.exe'
+
+const playgroundDir = path.resolve(dirname(fileURLToPath(import.meta.url)), '../playground/')
 let projects = fs
   .readdirSync(playgroundDir, { withFileTypes: true })
   .filter((dirent) => dirent.isDirectory())
@@ -12,7 +18,17 @@ if (process.argv[3]) projects = projects.filter((project) => project.includes(pr
 
 cd(playgroundDir)
 console.log('Installing playground dependencies')
-await $`pnpm install`
+await new Promise((resolve, reject) => {
+  exec('npm install', { cwd: playgroundDir }, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`exec error: ${error}`)
+      return reject(error)
+    }
+    console.log(`stdout: ${stdout}`)
+    console.error(`stderr: ${stderr}`)
+    resolve()
+  })
+})
 
 for (const projectName of projects) {
   cd(path.resolve(playgroundDir, projectName))
@@ -25,29 +41,113 @@ Building ${projectName}
 #####
   
   `)
-  await $`pnpm build`
+  await new Promise((resolve, reject) => {
+    exec(
+      'npm run build',
+      { cwd: path.resolve(playgroundDir, projectName) },
+      (error, stdout, stderr) => {
+        if (error) {
+          console.error(`exec error: ${error}`)
+          return reject(error)
+        }
+        console.log(`stdout: ${stdout}`)
+        console.error(`stderr: ${stderr}`)
+        resolve()
+      },
+    )
+  })
 
   if ('@playwright/test' in packageJSON.devDependencies) {
-    await $`pnpm playwright install --with-deps`
+    await new Promise((resolve, reject) => {
+      exec(
+        'npx playwright install --with-deps',
+        { cwd: path.resolve(playgroundDir, projectName) },
+        (error, stdout, stderr) => {
+          if (error) {
+            console.error(`exec error: ${error}`)
+            return reject(error)
+          }
+          console.log(`stdout: ${stdout}`)
+          console.error(`stderr: ${stderr}`)
+          resolve()
+        },
+      )
+    })
   }
 
   if ('test:e2e' in packageJSON.scripts) {
     console.log(`Running e2e tests in ${projectName}`)
-    await $`pnpm test:e2e`
+    await new Promise((resolve, reject) => {
+      exec(
+        'npm run test:e2e',
+        { cwd: path.resolve(playgroundDir, projectName) },
+        (error, stdout, stderr) => {
+          if (error) {
+            console.error(`exec error: ${error}`)
+            return reject(error)
+          }
+          console.log(`stdout: ${stdout}`)
+          console.error(`stderr: ${stderr}`)
+          resolve()
+        },
+      )
+    })
   }
 
   if ('test:unit' in packageJSON.scripts) {
     console.log(`Running unit tests in ${projectName}`)
     if (projectName.includes('vitest') || projectName.includes('with-tests')) {
       // Vitest would otherwise enable watch mode by default.
-      await $`CI=1 pnpm test:unit`
+      await new Promise((resolve, reject) => {
+        exec(
+          'CI=1 npm run test:unit',
+          { cwd: path.resolve(playgroundDir, projectName) },
+          (error, stdout, stderr) => {
+            if (error) {
+              console.error(`exec error: ${error}`)
+              return reject(error)
+            }
+            console.log(`stdout: ${stdout}`)
+            console.error(`stderr: ${stderr}`)
+            resolve()
+          },
+        )
+      })
     } else {
-      await $`pnpm test:unit`
+      await new Promise((resolve, reject) => {
+        exec(
+          'npm run test:unit',
+          { cwd: path.resolve(playgroundDir, projectName) },
+          (error, stdout, stderr) => {
+            if (error) {
+              console.error(`exec error: ${error}`)
+              return reject(error)
+            }
+            console.log(`stdout: ${stdout}`)
+            console.error(`stderr: ${stderr}`)
+            resolve()
+          },
+        )
+      })
     }
   }
 
   if ('type-check' in packageJSON.scripts) {
     console.log(`Running type-check in ${projectName}`)
-    await $`pnpm type-check`
+    await new Promise((resolve, reject) => {
+      exec(
+        'npm run type-check',
+        { cwd: path.resolve(playgroundDir, projectName) },
+        (error, stdout, stderr) => {
+          if (error) {
+            console.error(`exec error: ${error}`)
+            return reject(error)
+          }
+          console.log(`stdout: ${stdout}`)
+          console.error(`stderr: ${stderr}`)
+          resolve()
+        },
+      )
+    })
   }
 }

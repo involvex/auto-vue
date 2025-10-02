@@ -14,6 +14,12 @@ To use `create-autovue`, install it globally via npm:
 npm install -g @involvex/auto-vue
 ```
 
+## Quick Use with npx
+
+```bash
+npx @involvex/auto-vue@latest my-vue-project
+```
+
 ## Usage
 
 Once installed, you can create a new Vue project by running the following command in your terminal:
@@ -50,3 +56,5 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 [@involvex](https://github.com/sponsors/involvex)
 
 [buymeacoffee.com/involvex](https://buymeacoffee.com/involvex)
+
+[paypal.me](https://paypal.me/involvex)

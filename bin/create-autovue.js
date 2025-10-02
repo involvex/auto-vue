@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/*! create-autovue v0.0.4 | MIT */
+/*! @involvex/autovue v0.0.7 | MIT */
 import { createRequire } from 'node:module'
 import { execSync } from 'node:child_process'
 import * as fs from 'node:fs'
@@ -3696,7 +3696,7 @@ function emptyRouterConfig(rootDir, needsTypeScript) {
 //#endregion
 //#region package.json
 var name = '@involvex/auto-vue'
-var version = '0.0.4'
+var version = '0.0.7'
 var description = 'Full automated Vue Setup with 3 git branches: main, dev, github pages'
 var type = 'module'
 var bin = { 'create-autovue': 'bin/create-autovue.js' }
@@ -3712,7 +3712,7 @@ var scripts = {
   fix: 'npm run format && npm run lint:fix',
   build:
     "rolldown -c rolldown.config.ts && node -e \"const fs = require('fs'); fs.mkdirSync('bin', {recursive: true}); fs.renameSync('bundle.js', 'bin/create-autovue.js')\"",
-  snapshot: 'zx ./scripts/snapshot.mjs',
+  snapshot: 'node ./scripts/snapshot.mjs',
   pretest: 'npm run build && npm run snapshot',
   test: 'zx ./scripts/test.mjs',
   'test:unit': 'vitest',
@@ -4270,6 +4270,9 @@ ${(0, import_picocolors.dim)('|')} Initializing Git repository...`
     }
   }
   Se(outroMessage)
+  Se(
+    `${(0, import_picocolors.bold)((0, import_picocolors.magenta)('Thank you for using @involvex/autovue !\n\n   Visit https://github.com/involvex/auto-vue for more information !\n\n   Consider supporting this project https://github.com/involvex/auto-vue?tab=readme-ov-file#supporting-the-project'))}\n`,
+  )
 }
 init().catch((e$1) => {
   console.error(e$1)
