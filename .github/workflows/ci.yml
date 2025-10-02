@@ -66,7 +66,10 @@ jobs:
       - name: Create Release Commit and Tag
         run: npm run release
       - name: Push Release Commit and Tag
-        run: git push --follow-tags origin main
+        run: |
+          git fetch origin main
+          git pull origin main || echo "No remote changes to pull"
+          git push --follow-tags origin main
       - name: Publish to npm
         run: npm publish
         env:
@@ -102,6 +105,8 @@ jobs:
           git add .
           git commit -m "chore: automated deployment $(date +'%Y-%m-%d %H:%M:%S')" || echo "No changes to commit"
           npm run release
+          git fetch origin main
+          git pull origin main || echo "No remote changes to pull"
           git push origin main
           git push origin --tags || echo "No tags to push"
       - name: Publish to npm
