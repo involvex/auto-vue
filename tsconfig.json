@@ -1,10 +1,12 @@
 {
   "extends": "@tsconfig/node22/tsconfig.json",
-  "include": ["index.ts", "utils/**/*"],
+  "include": ["index.ts", "utils/**/*", "eslint.config.js"],
   "compilerOptions": {
     "strict": false,
     "resolveJsonModule": true,
     "moduleResolution": "Bundler",
-    "module": "ESNext"
+    "module": "ESNext",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   }
 }

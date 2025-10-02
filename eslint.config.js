@@ -1,24 +1,17 @@
-// @ts-check
-
-import eslint from '@eslint/js'
+import js from '@eslint/js'
 import tseslint from 'typescript-eslint'
-import eslintConfigPrettier from 'eslint-config-prettier'
 
-export default tseslint.config(
-  eslint.configs.recommended,
-  ...tseslint.configs.recommended,
-  eslintConfigPrettier,
-  {
-    ignores: [
-      'bin/',
-      'node_modules/',
-      'bundle.js',
-      '*.config.js',
-      '*.config.ts',
-      '.eslintrc.cjs',
-      'playground/',
-      'scripts/',
-      'template/',
-    ],
-  },
-)
+export default tseslint.config(js.configs.recommended, ...tseslint.configs.recommended, {
+  ignores: [
+    'bin/',
+    'node_modules/',
+    'bundle.js',
+    '*.config.js',
+    '*.config.ts',
+    '.eslintrc.cjs',
+    'playground/',
+    'scripts/',
+    'template/',
+    'docs/',
+  ],
+})

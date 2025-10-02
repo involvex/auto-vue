@@ -1,6 +1,6 @@
 {
   "name": "@involvex/auto-vue",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "Full automated Vue Setup with 3 git branches: main, dev, github pages",
   "type": "module",
   "bin": {
@@ -29,7 +29,13 @@
     "test:unit": "vitest",
     "preversion": "git fetch && git status -uno | grep -q 'Your branch is up to date'",
     "postversion": "zx ./scripts/postversion.mjs",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "deploy": "zx ./scripts/deploy.mjs",
+    "deploy:full": "npm run build && npm run format && npm run lint:fix && npm run test && npm run release && npm run git:sync",
+    "git:sync": "git add . && git commit -m \"chore: automated deployment $(date +'%Y-%m-%d %H:%M:%S')\" && git push origin main && git push origin --tags",
+    "git:tag": "git tag -a v$(node -p \"require('./package.json').version\") -m \"Release v$(node -p \"require('./package.json').version\")\"",
+    "git:push": "git push origin main && git push origin --tags",
+    "sync": "npm run git:sync"
   },
   "repository": {
     "type": "git",
@@ -49,6 +55,7 @@
   "homepage": "https://github.com/involvex/auto-vue#readme",
   "devDependencies": {
     "@clack/prompts": "^0.11.0",
+    "@eslint/eslintrc": "^3.2.0",
     "@tsconfig/node22": "^22.0.2",
     "@types/eslint": "^9.6.1",
     "@types/node": "^22.18.6",

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - AutoVue</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">AutoVue</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="installation.html" class="nav-link">Installation</a></li>
+                <li><a href="about.html" class="nav-link active">About</a></li>
+                <li><a href="support.html" class="nav-link">Support</a></li>
+            </ul>
+            <div class="nav-controls">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                    🌙 Dark
+                </button>
+                <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+                    ☰
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section class="about-hero">
+            <h1>About AutoVue</h1>
+            <p class="section-subtitle">Learn more about the project and how to get involved</p>
+        </section>
+
+        <section class="about-content">
+            <h2>Project Information</h2>
+            <p>AutoVue is a powerful command-line tool that automates the setup process for Vue.js projects. Created by <strong>Involvex</strong>, this npm package streamlines the development workflow by providing pre-configured project templates with multiple git branches for different environments.</p>
+
+            <h2>Project Links</h2>
+            <div class="project-links">
+                <div class="link-card">
+                    <div class="link-icon">📁</div>
+                    <h3>GitHub Repository</h3>
+                    <p>View the source code, report issues, and contribute to the project.</p>
+                    <a href="https://github.com/involvex/auto-vue" target="_blank" rel="noopener" class="project-link">
+                        Visit GitHub
+                    </a>
+                </div>
+
+                <div class="link-card">
+                    <div class="link-icon">📦</div>
+                    <h3>npm Package</h3>
+                    <p>Install and use AutoVue from the npm registry.</p>
+                    <a href="https://www.npmjs.com/package/@involvex/auto-vue" target="_blank" rel="noopener" class="project-link">
+                        View on npm
+                    </a>
+                </div>
+
+                <div class="link-card">
+                    <div class="link-icon">💖</div>
+                    <h3>GitHub Sponsors</h3>
+                    <p>Support the project through GitHub's sponsorship program.</p>
+                    <a href="https://github.com/sponsors/involvex" target="_blank" rel="noopener" class="project-link">
+                        Sponsor on GitHub
+                    </a>
+                </div>
+
+                <div class="link-card">
+                    <div class="link-icon">☕</div>
+                    <h3>Buy Me a Coffee</h3>
+                    <p>Show your appreciation with a one-time donation.</p>
+                    <a href="https://www.buymeacoffee.com/involvex" target="_blank" rel="noopener" class="project-link">
+                        Buy Coffee
+                    </a>
+                </div>
+
+                <div class="link-card">
+                    <div class="link-icon">💰</div>
+                    <h3>PayPal</h3>
+                    <p>Make a direct contribution via PayPal.</p>
+                    <a href="https://paypal.me/involvex" target="_blank" rel="noopener" class="project-link">
+                        Donate via PayPal
+                    </a>
+                </div>
+            </div>
+
+            <h2>Project Features</h2>
+            <ul class="features-list">
+                <li><strong>Automated Setup:</strong> Generate complete Vue.js projects with a single command</li>
+                <li><strong>Multiple Branches:</strong> Pre-configured main, dev, and GitHub Pages branches</li>
+                <li><strong>Flexible Templates:</strong> Support for various Vue.js configurations including Vue Router, Pinia, testing frameworks, and more</li>
+                <li><strong>Modern Tooling:</strong> Built with TypeScript, includes ESLint, Prettier, and modern build tools</li>
+                <li><strong>Internationalization:</strong> Multi-language support for better accessibility</li>
+            </ul>
+
+            <h2>Getting Involved</h2>
+            <p>There are many ways to contribute to AutoVue:</p>
+            <ul class="contribution-list">
+                <li><strong>Report Issues:</strong> Found a bug? <a href="https://github.com/involvex/auto-vue/issues" target="_blank" rel="noopener">Open an issue</a> on GitHub</li>
+                <li><strong>Contribute Code:</strong> Help improve AutoVue by <a href="https://github.com/involvex/auto-vue/pulls" target="_blank" rel="noopener">submitting a pull request</a></li>
+                <li><strong>Improve Documentation:</strong> Help make our docs better with suggestions or contributions</li>
+                <li><strong>Spread the Word:</strong> Share AutoVue with other developers who might find it useful</li>
+                <li><strong>Provide Feedback:</strong> Let us know how we can improve the tool for your needs</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>Created by <a href="https://github.com/involvex" target="_blank" rel="noopener">Involvex</a></p>
+            <p>View project on <a href="https://github.com/involvex/auto-vue" target="_blank" rel="noopener">GitHub</a></p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,5 +1,9 @@
 # @involvex/autovue
 
+```
+$ npx @involvex/auto-vue
+```
+
 ## Description
 
 `create-autovue` is a command-line interface (CLI) tool designed to streamline the setup of new Vue.js projects. It automates the entire scaffolding process, including the creation of a standardized three-branch Git repository structure (`main`, `dev`, `gh-pages`) to get you started with development faster.

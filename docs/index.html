@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoVue - Automated Vue Setup Tool</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">AutoVue</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="installation.html" class="nav-link">Installation</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="support.html" class="nav-link">Support</a></li>
+            </ul>
+            <div class="nav-controls">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                    🌙 Dark
+                </button>
+                <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+                    ☰
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>
+                    <div class="terminal-logo">
+                        <span class="terminal-symbol">$</span>
+                        <span class="terminal-prompt">npx</span>
+                        <span class="terminal-command">@involvex/auto-vue</span>
+                        <span class="terminal-cursor"></span>
+                    </div>
+                </h1>
+                <p class="hero-subtitle">Full automated Vue Setup with 3 git branches: main, dev, github pages</p>
+            </div>
+        </section>
+
+        <section class="project-description">
+            <h2>About This Project</h2>
+            <p>AutoVue is a powerful command-line tool that automates the setup process for Vue.js projects. Created by Involvex, this npm package streamlines the development workflow by providing pre-configured project templates with multiple git branches for different environments.</p>
+
+            <h3>Key Features</h3>
+            <ul class="features-list">
+                <li><strong>Automated Setup:</strong> Generate complete Vue.js projects with a single command</li>
+                <li><strong>Multiple Branches:</strong> Pre-configured main, dev, and GitHub Pages branches</li>
+                <li><strong>Flexible Templates:</strong> Support for various Vue.js configurations including Vue Router, Pinia, testing frameworks, and more</li>
+                <li><strong>Modern Tooling:</strong> Built with TypeScript, includes ESLint, Prettier, and modern build tools</li>
+                <li><strong>Internationalization:</strong> Multi-language support for better accessibility</li>
+            </ul>
+
+            <h3>Project Structure</h3>
+            <p>The tool creates a standardized project structure that includes:</p>
+            <ul class="project-structure">
+                <li><strong>Main Branch:</strong> Production-ready code</li>
+                <li><strong>Dev Branch:</strong> Development environment with additional tooling</li>
+                <li><strong>GitHub Pages Branch:</strong> Documentation and demo site (this site)</li>
+            </ul>
+        </section>
+
+        <section class="getting-started">
+            <h2>Getting Started</h2>
+            <p>To start using AutoVue, visit the <a href="installation.html">Installation</a> page for detailed setup instructions.</p>
+            <p>For information on how to support this project, check out the <a href="support.html">Support</a> page.</p>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>Created by <a href="https://github.com/involvex" target="_blank" rel="noopener">Involvex</a></p>
+            <p>View project on <a href="https://github.com/involvex/auto-vue" target="_blank" rel="noopener">GitHub</a></p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

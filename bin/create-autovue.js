@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/*! @involvex/autovue v0.0.7 | MIT */
+/*! @involvex/autovue v0.0.9 | MIT */
 import { createRequire } from 'node:module'
 import { execSync } from 'node:child_process'
 import * as fs from 'node:fs'
@@ -3696,7 +3696,7 @@ function emptyRouterConfig(rootDir, needsTypeScript) {
 //#endregion
 //#region package.json
 var name = '@involvex/auto-vue'
-var version = '0.0.7'
+var version = '0.0.9'
 var description = 'Full automated Vue Setup with 3 git branches: main, dev, github pages'
 var type = 'module'
 var bin = { 'create-autovue': 'bin/create-autovue.js' }
@@ -3719,6 +3719,15 @@ var scripts = {
   preversion: "git fetch && git status -uno | grep -q 'Your branch is up to date'",
   postversion: 'zx ./scripts/postversion.mjs',
   prepublishOnly: 'npm run build',
+  deploy: 'zx ./scripts/deploy.mjs',
+  'deploy:full':
+    'npm run build && npm run format && npm run lint:fix && npm run test && npm run release && npm run git:sync',
+  'git:sync':
+    'git add . && git commit -m "chore: automated deployment $(date +\'%Y-%m-%d %H:%M:%S\')" && git push origin main && git push origin --tags',
+  'git:tag':
+    'git tag -a v$(node -p "require(\'./package.json\').version") -m "Release v$(node -p "require(\'./package.json\').version")"',
+  'git:push': 'git push origin main && git push origin --tags',
+  sync: 'npm run git:sync',
 }
 var repository = {
   type: 'git',
@@ -3730,6 +3739,7 @@ var license = 'MIT'
 var homepage = 'https://github.com/involvex/auto-vue#readme'
 var devDependencies = {
   '@clack/prompts': '^0.11.0',
+  '@eslint/eslintrc': '^3.2.0',
   '@tsconfig/node22': '^22.0.2',
   '@types/eslint': '^9.6.1',
   '@types/node': '^22.18.6',
