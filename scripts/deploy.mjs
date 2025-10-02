@@ -72,12 +72,6 @@ try {
   await runCommand('git push origin main')
   await runCommand('git push origin --tags')
 
-  // Step 8: Publish to npm (if not in CI)
-  if (!process.env.CI) {
-    console.log(chalk.yellow('📦 Publishing to npm...'))
-    await runCommand('npm publish')
-  }
-
   console.log(chalk.green('✅ Deployment completed successfully!'))
   console.log(chalk.green(`📦 Version: v${currentVersion}`))
   console.log(chalk.green(`🕒 Timestamp: ${timestamp}`))

@@ -51,12 +51,6 @@ try {
     git push origin main
     git push origin --tags
 
-    # Step 8: Publish to npm (if not in CI)
-    if (-not $env:CI) {
-        Write-Host "Publishing to npm..." -ForegroundColor Yellow
-        npm publish
-    }
-
     Write-Host "Deployment completed successfully!" -ForegroundColor Green
     Write-Host "Version: v$currentVersion" -ForegroundColor Green
     Write-Host "Timestamp: $timestamp" -ForegroundColor Green

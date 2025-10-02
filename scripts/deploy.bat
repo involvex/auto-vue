@@ -51,12 +51,6 @@ echo Pushing to GitHub...
 git push origin main
 git push origin --tags
 
-REM Step 8: Publish to npm (if not in CI)
-if not defined CI (
-    echo Publishing to npm...
-    npm publish
-)
-
 echo Deployment completed successfully!
 echo Version: v%VERSION%
 echo Timestamp: %DATE% %TIME%
